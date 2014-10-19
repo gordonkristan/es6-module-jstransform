@@ -29,7 +29,7 @@ function visitImportDeclaration(traverse, node, path, state) {
       specifier = node.specifiers[0];
       assert(specifier, "default import without specifier: " + node);
       name = specifier.name ? specifier.name.name : specifier.id.name;
-      utils.append('var ' + name + ' = require(' + node.source.raw + ');', state);
+      utils.append('var ' + name + ' = require(' + node.source.raw + ')["default"];', state);
       break;
 
     // import {name, one as other} from "module"
@@ -91,7 +91,7 @@ function visitExportDeclaration(traverse, node, path, state) {
       name = node.declaration[0].id.name;
       switch (name) {
         case 'default':
-          utils.append('module.exports =', state);
+          utils.append('module.exports["default"] =', state);
           break;
         default:
           utils.append('module.exports.' + name + ' = ', state);
